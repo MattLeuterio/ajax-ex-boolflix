@@ -30,16 +30,20 @@ console.log('jQuery ok ->', $);
         
     });
 
-    // Avvia ricerca con "INVIO"
+    // Avvia ricerca con "INVIO" ed ad ogni click sulla SPACEBAR
     inputSearch.keyup(function(event) {
-
+            
+            /**
+             * L'idea è quella di poter filtrare man mano la ricerca mentre scrivi
+             * usando quindi 
+             */
             if(event.which == 13 || event.which == 32) {
                 searchMovies(inputSearch, sectionResults, api, template);
             };
 
     });
 
-    // SPERIMENTALE: avvia ricerca ad ogni click sulla SPACEBAR
+    
 
 
 
