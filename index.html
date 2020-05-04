@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolflix</title>
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <!-- Google Font | Roboto & Roboto Slab-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <input id="search" type="text">
+        <button class="btn-search">Search</button>
+    </header>
+
+    <main class="main">
+        <section class="main_result-search">
+            result search
+        </section>
+    </main>
+
+    
+    <!-- Handlebars -->
+    <script id="movie-template" type="text/x-handlebars-template">
+        <div class="movie">
+            <ul class="movie_detail">
+                <li>
+                    <h4>Title: {{ title }}</h4>
+                </li>
+                <li>
+                    <h4>Original Title: {{ originalTitle }}</h4>
+                </li>
+                <li>
+                    <h4>Original Language: {{ language }}</h4>
+                </li>
+                <li>
+                    <h4>Average: {{ average }}</h4>
+                </li>
+            </ul>
+        </div>
+        
+    </script>
+
+
+
+    <!-- JS -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js'></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

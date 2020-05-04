@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    padding: 20px; /* Debug */
+}
+
+ul li {
+    list-style: none;
+}
+
+main {
+    margin-top: 20px; /* Debug */
+}
+
+.movie {
+    padding: 10px 0;
+}
