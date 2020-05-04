@@ -26,9 +26,21 @@ console.log('jQuery ok ->', $);
     btnSearch.click( function() {
         
         // Chiamata Api e stampo risultati
-        searchMovies(inputSearch, sectionResults, api, template)
+        searchMovies(inputSearch, sectionResults, api, template);
         
     });
+
+    // Avvia ricerca con "INVIO"
+    inputSearch.keyup(function(event) {
+
+            if(event.which == 13 || event.which == 32) {
+                searchMovies(inputSearch, sectionResults, api, template);
+            };
+
+    });
+
+    // SPERIMENTALE: avvia ricerca ad ogni click sulla SPACEBAR
+
 
 
 
