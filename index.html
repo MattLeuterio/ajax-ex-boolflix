@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Google Font | Roboto & Roboto Slab-->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'/>
 </head>
 <body>
 
     <header class="main-header">
-        <input id="search" type="text">
+        <input id="search" type="text" placeholder="Inserisci titolo..">
         <button class="btn-search">Search</button>
     </header>
 
@@ -37,7 +39,7 @@
                     <h4>Original Language: {{{ language }}}</h4>
                 </li>
                 <li>
-                    <h4>Average: {{ average }}</h4>
+                    <h4>Average: {{{ average }}}</h4>
                 </li>
                 <li>
                     <h4>Format: {{ type }}</h4>
