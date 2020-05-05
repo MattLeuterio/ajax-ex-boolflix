@@ -20,3 +20,7 @@ main {
 .movie {
     padding: 10px 0;
 }
+
+.movie .movie_detail img {
+    max-width: 15px;
+}
