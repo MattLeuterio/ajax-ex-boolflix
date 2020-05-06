@@ -22,5 +22,5 @@ main {
 }
 
 .movie .movie_detail img {
-    max-width: 15px;
+    width: 15px;
 }
