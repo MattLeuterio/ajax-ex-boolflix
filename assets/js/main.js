@@ -16,19 +16,14 @@ console.log('jQuery ok ->', $);
     var apiFilms = 'https://api.themoviedb.org/3/search/movie';
     var apiSeries = 'https://api.themoviedb.org/3/search/tv';
     var inputSearch = $('.main-header input#search');
-    var btnSearch = $('.main-header button.btn-search');
     var sectionResults = $('.main .main_result-search');
+    var sectionFilms = $('.main .main_result-search #films');
+    var sectionSeries = $('.main .main_result-search #series');
+
     
     // Init Handlebars
     var source = $('#movie-template').html();
     var template = Handlebars.compile(source);
-
-    // Avvia ricerca con bottone "Search"
-    btnSearch.click( function() {
-        
-        search(inputSearch, sectionResults, apiFilms, apiSeries, template)
-        
-    });
 
     // Avvia ricerca con "INVIO" ed ad ogni click sulla SPACEBAR
     inputSearch.keyup(function(event) {
@@ -38,14 +33,11 @@ console.log('jQuery ok ->', $);
              * usando quindi 
              */
             if(event.which == 13 || event.which == 32) {
-                search(inputSearch, sectionResults, apiFilms, apiSeries, template)
+                search(inputSearch, sectionFilms, sectionSeries, apiFilms, apiSeries, template)
             };
+
         
     });
-
-    
-
-
 
 
  }); // <- End Doc Ready 
@@ -54,10 +46,16 @@ console.log('jQuery ok ->', $);
  *  FUNCTIONS
  *********************/
 
+
 //Funzione per la ricerca dell'utente / Con reset iniziale
-function search(inputSearch, sectionResults, apiFilms, apiTv, template, starAverage) {
-    reset(sectionResults);
-    
+function search(inputSearch, sectionFilms, sectionSeries, apiFilms, apiTv, template, starAverage, movieDetail, movieOverlay) {
+
+    // reset contenuti main
+    reset(sectionFilms, sectionSeries);
+
+    var posterBaseUrl = 'https://image.tmdb.org/t/p/'
+    var posterSizes = 'w342';
+
     // FILM - ricerca dell'utente / gestisce chiamata API film
     if(inputSearch.val() != '') {
 
@@ -81,30 +79,31 @@ function search(inputSearch, sectionResults, apiFilms, apiTv, template, starAver
                     for (var i = 0; i < searchResults.length; i++) {
                         
                         var thisResult = searchResults[i];
+                        var summaryStr = thisResult.overview;
                         
                         // imposto dati template
                         var context = {
+                            posterUrl: posterImg(thisResult, posterBaseUrl, posterSizes),
                             title: thisResult.title,
                             originalTitle: thisResult.original_title,
                             language: flags(thisResult.original_language),
                             average: stars(starAverage, thisResult, searchResults),
-                            type: 'Film'
+                            type: 'Film',
+                            summary: summaryStr.substr(0, 200) + "..."
                         }                      
-
+                        
                         //compilare e aggiungere template
                         var htmlMovie = template(context);
-                        sectionResults.append(htmlMovie);
+                        sectionFilms.append(htmlMovie);
 
                     } 
 
                 } else {
-                    reset(sectionResults);
-                    sectionResults.append('Nessun Risultato in Film');
+                    reset(sectionFilms, sectionSeries);
+                    sectionFilms.append('No results in Film');
                     inputSearch.select();
                 }
                 
-
-
             },
                 
             error: function() {
@@ -112,13 +111,13 @@ function search(inputSearch, sectionResults, apiFilms, apiTv, template, starAver
             }
         });
     } else {
-        reset(sectionResults);
+        reset(sectionFilms, sectionSeries);
         sectionResults.append('Errore, inserire un valore nella ricerca')
         inputSearch.focus();
     }
 
 
-// SERIE TV - ricerca dell'utente / gestisce chiamata API SerieTV
+    // SERIE TV - ricerca dell'utente / gestisce chiamata API SerieTV
     if(inputSearch.val() != '') {
       
         // chiamata api con query in input
@@ -140,24 +139,27 @@ function search(inputSearch, sectionResults, apiFilms, apiTv, template, starAver
 
                     for (var i = 0; i < searchResults.length; i++) {
                         var thisResult = searchResults[i];
-                    
+                        var summaryStr = thisResult.overview;
+
                         // imposto dati template
                         var context = {
+                            posterUrl: posterImg(thisResult, posterBaseUrl, posterSizes),
                             title: thisResult.name,
                             originalTitle: thisResult.original_name,
                             language: flags(thisResult.original_language),
                             average: stars(starAverage, thisResult, searchResults),
-                            type: 'TV'
+                            type: 'TV-Series',
+                            summary: summaryStr.substr(0, 200) + "..."
                         }
 
                         //compilare e aggiungere template
                         var htmlMovie = template(context);
-                        sectionResults.append(htmlMovie);
+                        sectionSeries.append(htmlMovie);
 
                     } 
 
                 } else {
-                    sectionResults.append('Nessun Risultato in TV');
+                    sectionSeries.append('No results in TV-Series');
                     inputSearch.select();
                 }
 
@@ -169,13 +171,24 @@ function search(inputSearch, sectionResults, apiFilms, apiTv, template, starAver
                 console.log('Errore chiamata'); 
             }
         });
-  } else {
+    } else {
       sectionResults.append('Errore, inserire un valore nella ricerca')
       inputSearch.focus();
-  };
-
-
+    };
+    
 };
+
+// Funzione per gestire la visualizzazione dei poster
+function posterImg(thisResult, posterBaseUrl, posterSizes) {
+    if(thisResult.poster_path == null) {
+        thisResult.poster_path = 'assets/img/no_poster_img.jpg'
+        return thisResult.poster_path
+    }
+    thisResult.poster_path = posterBaseUrl + posterSizes + thisResult.poster_path
+    return thisResult.poster_path
+
+}
+
 
 function stars(starAverage, thisResult, searchResults) {
      // Assegno ad una varibile il voto in numero intero (arrotondato per eccesso)
@@ -237,7 +250,7 @@ function flags(thisResult) {
     for (var i = 0; i < flagArray.length; i++) {
         var ciao = flagArray[i]
         if(thisResult == ciao) {
-            return '<img src="assets/img/' + ciao + '.svg"'
+            return '<img src="assets/img/' + ciao + '.svg" class="flags"'
         };  
     };
 
@@ -245,6 +258,7 @@ function flags(thisResult) {
 };
 
 // funzione Reset DOM container
-function reset(container) {  
-    container.html('');
-};      
+function reset(containerFilms, containerSeries) {  
+    containerFilms.html('');
+    containerSeries.html('');
+};

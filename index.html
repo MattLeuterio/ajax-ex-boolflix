@@ -13,14 +13,30 @@
 </head>
 <body>
 
-    <header class="main-header">
-        <input id="search" type="text" placeholder="Inserisci titolo..">
-        <button class="btn-search">Search</button>
+    <header class="main-header u_flex">
+        <div class="main-header__left u_flex">
+            <img src="assets/img/logo-matflix.png" alt="">
+            <a href="#wrapper-films">Films</a>
+            <a href="#wrapper-series">Tv-Series</a>
+        </div> 
+        <div class="search-section u_pRelative">
+            <i class="fas fa-search u_pAbsolute"></i>
+            <input id="search" type="text" placeholder="Search">
+        </div>
     </header>
 
-    <main class="main">
+    <main class="main u_flexColumn">
         <section class="main_result-search">
-       ss
+            <div id="wrapper-films">
+                <h2>Films</h2>
+            <section id="films" class="u_flex">
+            </section>
+            </div>
+            <div id="wrapper-series">
+                <h2>TV-Series</h2>
+            <section id="series" class="u_flex">
+            </section> 
+            </div>   
         </section>
     </main>
 
@@ -28,21 +44,27 @@
     <!-- Handlebars -->
     <script id="movie-template" type="text/x-handlebars-template">
         <div class="movie">
-            <ul class="movie_detail">
+            <div class="poster u_pAbsolute">
+                <img src="{{posterUrl}}" alt="">
+            </div>
+            <ul class="movie_detail u_pAbsolute">
                 <li>
-                    <h4>Title: {{ title }}</h4>
+                    <h4 class="movie__format">{{ type }}</h4>
                 </li>
                 <li>
-                    <h4>Original Title: {{ originalTitle }}</h4>
+                    <h4 class="movie__title">{{ title }}</h4>
                 </li>
                 <li>
-                    <h4>Original Language: {{{ language }}}</h4>
+                    <h4 class="movie__original-title">Original Title: <strong>{{ originalTitle }}</strong></h4>
                 </li>
                 <li>
-                    <h4>Average: {{{ average }}}</h4>
+                    <h4 class="movie__language">Lang: {{{ language }}}</h4>
                 </li>
                 <li>
-                    <h4>Format: {{ type }}</h4>
+                    <h4 class="movie__average u_pAbsolute">{{{ average }}}</h4>
+                </li>
+                <li class="summary">
+                    <p>{{ summary }}</p>
                 </li>
             </ul>
         </div>

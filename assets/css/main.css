@@ -6,21 +6,160 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    padding: 20px; /* Debug */
+    background: #141414;
+    color: #fff;
 }
 
 ul li {
     list-style: none;
 }
 
-main {
-    margin-top: 20px; /* Debug */
+/* UTILITY */
+
+.u_flex {
+    display: flex;
 }
+
+.u_flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.u_pRelative {
+    position: relative;
+}
+
+.u_pAbsolute {
+    position: absolute;
+}
+
+
+/* HEADER */
+
+.main-header {
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 68px;
+    background: #0b0b0b;
+    z-index: 1;
+}
+
+.main-header__left {
+    align-items: center;
+}
+
+.main-header a {
+    text-decoration: none;
+    padding: 15px;
+    color: #fff;
+    font-size: 14px;
+    justify-self: right;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.main-header img{
+    width: 110px;
+    margin-left: 50px;
+}
+
+.main-header input {
+    height: 30px;
+    padding: 10px;
+    padding-left: 35px;
+    margin-right: 20px;
+    border: 1px solid #fff;
+    background: #141414;
+    color: #fff;
+}
+
+.main-header .search-section i {
+    color: #fff;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* MAIN */
+
+.main {
+    padding-top: 68px;
+}
+
+.main_result-search h2 {
+ padding: 70px 70px 30px;
+}
+
+#films,
+#series {
+    flex-wrap: wrap;
+    padding: 0 50px;
+} 
 
 .movie {
-    padding: 10px 0;
+    width: 342px;
+    height: 512px;
+    margin: 10px 5px;
+    position: relative;
 }
 
-.movie .movie_detail img {
+.poster {
+    width: 100%;
+    height: 100%;
+}
+
+.movie .poster img {
+    width: 100%;
+    height: 100%;
+}
+
+.movie .movie_detail {
+    width: 342px;
+    height: 512px;
+    bottom: 0px;
+    padding: 230px 20px 20px 20px;
+    color: #fff;
+    background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(5,5,5,1) 75%);
+    opacity: 0;
+    transition: linear 0.1s;
+}
+
+.movie .movie_detail:hover {
+    opacity: 1;
+}
+
+.movie .movie__format {
+    font-size: 13px;
+    color: #e50914; 
+}
+
+.movie_detail .movie__title {
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.movie_detail .movie__original-title,
+.movie_detail .movie__language {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.movie_detail .movie__language {
+    margin-bottom: 20px;
+}
+
+.movie_detail .movie__summary {
+    font-size: 12px;
+}
+
+.movie_detail .movie__average {
+    font-size: 10px;
+    top: 19px;
+    right: 15px;
+}
+
+.movie .movie_detail img.flags {
     width: 15px;
 }
