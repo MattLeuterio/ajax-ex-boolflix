@@ -230,11 +230,6 @@ function search(inputSearch, sectionFilms, sectionSeries, template, starAverage)
                         } 
     
                     } else {
-                        if (ciao == 'https://api.themoviedb.org/3/search/tv') {
-                            sectionSeries.text('No results in Tv-series')
-                        } else if (ciao == 'https://api.themoviedb.org/3/search/movie') {
-                            sectionFilms.text('No results in Films')
-                        } 
                         
                         console.log('devo trovare il modo');
                         inputSearch.select();
