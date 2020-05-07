@@ -13,10 +13,9 @@ console.log('jQuery ok ->', $);
      */
 
     // refs
-    var apiFilms = 'https://api.themoviedb.org/3/search/movie';
-    var apiSeries = 'https://api.themoviedb.org/3/search/tv';
+    var searchBtn = $('.search-section i');
+    var homeBtn = $('.home-btn');
     var inputSearch = $('.main-header input#search');
-    var sectionResults = $('.main .main_result-search');
     var sectionFilms = $('.main .main_result-search #films');
     var sectionSeries = $('.main .main_result-search #series');
 
@@ -24,16 +23,45 @@ console.log('jQuery ok ->', $);
     // Init Handlebars
     var source = $('#movie-template').html();
     var template = Handlebars.compile(source);
+    
+    // trending film e tv-series
+    trending(sectionFilms, sectionSeries, template);
+
+    homeBtn.click( function() {
+        // Aggiungo trending a nome sezione
+        $('.main_result-search span.trending').text('Trending');
+
+        //reset containers
+        reset(sectionFilms, sectionSeries);
+        
+        // trending film e tv-series
+        trending(sectionFilms, sectionSeries, template);
+    });
+
+    // Show and Hide Input Field
+    searchBtn.click( function() {
+
+        // Cambio icona cambiando la classe (fontAwesome)
+         searchBtn.toggleClass('fas fa-search');
+         searchBtn.toggleClass('fas fa-times');
+        
+         // Aggiungo classe Active per animazione Show/Hide
+         inputSearch.toggleClass('active-searchbar');
+
+         //Focus sull'input
+         inputSearch.select();
+
+    });
 
     // Avvia ricerca con "INVIO" ed ad ogni click sulla SPACEBAR
-    inputSearch.keyup(function(event) {
+    inputSearch.keypress(function(event) {
             
             /**
              * L'idea è quella di poter filtrare man mano la ricerca mentre scrivi
-             * usando quindi 
+             * usando quindi un detect anche sulla spacebar per far partire la ricerca
              */
-            if(event.which == 13 || event.which == 32) {
-                search(inputSearch, sectionFilms, sectionSeries, apiFilms, apiSeries, template)
+            if(event.which == 13) {
+                search(inputSearch, sectionFilms, sectionSeries, template)
             };
 
         
@@ -42,157 +70,207 @@ console.log('jQuery ok ->', $);
 
  }); // <- End Doc Ready 
 
+
 /*********************
  *  FUNCTIONS
  *********************/
 
+ // Funzione per printare di default i contenuti più cercati
+function trending(sectionFilms, sectionSeries, template) {
+    var posterBaseUrl = 'https://image.tmdb.org/t/p/'
+    var posterSizes = 'w342';
+    var apiTrending = [
+        'https://api.themoviedb.org/3/trending/movie/week?api_key=e2330ecaa641a077ab62520c44ab636f',
+        'https://api.themoviedb.org/3/trending/tv/week?api_key=e2330ecaa641a077ab62520c44ab636f'
+    ];
+
+
+    for (var i = 0; i < apiTrending.length; i++) {
+
+        thisApi = apiTrending[i]
+
+        // chiamata api con query in input
+        $.ajax({
+            url: thisApi,
+            method: 'GET',
+            success: function(res) {
+
+                // conservo i risultati in una variabile
+                var results = res.results;
+                
+                    for (var i = 0; i < results.length; i++) {
+     
+                        var movie = results[i];
+                        if(movie.overview == "") {
+                            var summaryStr = 'No description';
+                        } else {
+                            var summaryStr = movie.overview;
+                        }
+
+                        // controllo il type e lo assegno ad una variabile
+                        var thisType = '';
+                        if (results[i].title != undefined) {
+                            thisType = 'Film';     
+                        } else {
+                            thisType = 'Tv-series';
+                        }
+
+                        // imposto dati template
+                        var context = {
+                            posterUrl: posterImg(movie, posterBaseUrl, posterSizes),
+                            title: movie.title || movie.name,
+                            originalTitle: movie.original_title || movie.original_name,
+                            language: flags(movie.original_language),
+                            type: thisType,
+                            summary: setOverview(movie.overview)
+                        }                      
+                        
+                        //compilare e aggiungere template
+                        var htmlMovie = template(context);
+
+                        // Controlo per determinare in quale sezione appendere il singolo risultato
+                        if(thisType == 'Film') {
+                            sectionFilms.append(htmlMovie);
+                        } else {
+                            sectionSeries.append(htmlMovie)
+                        }
+                    } 
+    
+            },
+                
+            error: function() {
+                console.log('Errore chiamata'); 
+            }
+        });
+
+        
+    }
+}
 
 //Funzione per la ricerca dell'utente / Con reset iniziale
-function search(inputSearch, sectionFilms, sectionSeries, apiFilms, apiTv, template, starAverage, movieDetail, movieOverlay) {
+function search(inputSearch, sectionFilms, sectionSeries, template, starAverage) {
+
+    // Imposto placeholder
+    inputSearch.attr('placeholder', 'Search');
+
+    // Elimino Trending da nome sezione
+    $('.main_result-search span.trending').text('');
 
     // reset contenuti main
     reset(sectionFilms, sectionSeries);
 
     var posterBaseUrl = 'https://image.tmdb.org/t/p/'
     var posterSizes = 'w342';
+    var api = [
+            'https://api.themoviedb.org/3/search/movie',
+            'https://api.themoviedb.org/3/search/tv',
+    ];
 
-    // FILM - ricerca dell'utente / gestisce chiamata API film
-    if(inputSearch.val() != '') {
+    for (var b = 0; b < api.length; b++) {
+        var thisApi = api[b];   
 
-        // chiamata api con query in input
-        $.ajax({
-            url: apiFilms,
-            method: 'GET',
-            data: {
-                api_key: "e2330ecaa641a077ab62520c44ab636f",
-                language: "it-IT",
-                query: inputSearch.val()
-            },
-            success: function(res) {
+        var dataApi = {
+            url: thisApi,
+            api_key: "e2330ecaa641a077ab62520c44ab636f",
+            language: "it-IT",
+            query: inputSearch.val()
+        }
 
-                // conservo i risultati in una variabile
-                var searchResults = res.results;
+        if(dataApi.query != '') {
+            // chiamata api con query in input
+            $.ajax({
+                url: dataApi.url,
+                method: 'GET',
+                data: {
+                    api_key: dataApi.api_key,
+                    language: dataApi.language,
+                    query: dataApi.query
+                },
+                success: function(res) {
 
-                // controllo che effettivamente io abbia in risposta dei risultati
-                if(searchResults.length != 0) {
+                    // conservo i risultati in una variabile
+                    var searchResults = res.results;
+                    
+                    // controllo che effettivamente io abbia in risposta dei risultati
+                    if(searchResults.length != 0) {
+                        for (var i = 0; i < searchResults.length; i++) {
 
-                    for (var i = 0; i < searchResults.length; i++) {
+                            var movie = searchResults[i];
+
+                            // controllo il type e lo assegno ad una variabile
+                            var thisType = '';
+                            if (searchResults[i].title != undefined) {
+                                thisType = 'Film';   
+                            } else {
+                                thisType = 'Tv-series';
+                            }
+
+                            // imposto dati template
+                            var context = {
+                                posterUrl: posterImg(movie, posterBaseUrl, posterSizes),
+                                title: movie.title || movie.name,
+                                originalTitle: movie.original_title || movie.original_name,
+                                language: flags(movie.original_language),
+                                average: stars(starAverage, movie, searchResults),
+                                type: thisType,
+                                summary: setOverview(movie.overview)
+                            }                      
+                            
+                            //compilare e aggiungere template
+                            var htmlMovie = template(context);
+
+                            // Controlo per determinare in quale sezione appendere il singolo risultato
+                            if(thisType == 'Film') {
+                                sectionFilms.append(htmlMovie);
+                            } else {
+                                sectionSeries.append(htmlMovie)
+                            }
+                            
+    
+                        } 
+    
+                    } else {
+                        if (ciao == 'https://api.themoviedb.org/3/search/tv') {
+                            sectionSeries.text('No results in Tv-series')
+                        } else if (ciao == 'https://api.themoviedb.org/3/search/movie') {
+                            sectionFilms.text('No results in Films')
+                        } 
                         
-                        var thisResult = searchResults[i];
-                        var summaryStr = thisResult.overview;
-                        
-                        // imposto dati template
-                        var context = {
-                            posterUrl: posterImg(thisResult, posterBaseUrl, posterSizes),
-                            title: thisResult.title,
-                            originalTitle: thisResult.original_title,
-                            language: flags(thisResult.original_language),
-                            average: stars(starAverage, thisResult, searchResults),
-                            type: 'Film',
-                            summary: summaryStr.substr(0, 200) + "..."
-                        }                      
-                        
-                        //compilare e aggiungere template
-                        var htmlMovie = template(context);
-                        sectionFilms.append(htmlMovie);
-
-                    } 
-
-                } else {
-                    reset(sectionFilms, sectionSeries);
-                    sectionFilms.append('No results in Film');
-                    inputSearch.select();
+                        console.log('devo trovare il modo');
+                        inputSearch.select();
+                    }
+                    
+                },
+                    
+                error: function() {
+                    console.log('Errore chiamata'); 
                 }
-                
-            },
-                
-            error: function() {
-                console.log('Errore chiamata'); 
-            }
-        });
-    } else {
-        reset(sectionFilms, sectionSeries);
-        sectionResults.append('Errore, inserire un valore nella ricerca')
-        inputSearch.focus();
+            });
+        } else {
+            inputSearch.attr('placeholder', 'Errore, inserire un valore nella ricerca');
+            inputSearch.focus();
+        }
+
     }
 
-
-    // SERIE TV - ricerca dell'utente / gestisce chiamata API SerieTV
-    if(inputSearch.val() != '') {
-      
-        // chiamata api con query in input
-        $.ajax({
-            url: apiTv,
-            method: 'GET',
-            data: {
-                api_key: "e2330ecaa641a077ab62520c44ab636f",
-                language: "it-IT",
-                query: inputSearch.val()
-            },
-            success: function(res) {
-
-                // conservo i risultati in una variabile
-                var searchResults = res.results;
-
-                // controllo che effettivamente io abbia in risposta dei risultati
-                if(searchResults.length != 0) {
-
-                    for (var i = 0; i < searchResults.length; i++) {
-                        var thisResult = searchResults[i];
-                        var summaryStr = thisResult.overview;
-
-                        // imposto dati template
-                        var context = {
-                            posterUrl: posterImg(thisResult, posterBaseUrl, posterSizes),
-                            title: thisResult.name,
-                            originalTitle: thisResult.original_name,
-                            language: flags(thisResult.original_language),
-                            average: stars(starAverage, thisResult, searchResults),
-                            type: 'TV-Series',
-                            summary: summaryStr.substr(0, 200) + "..."
-                        }
-
-                        //compilare e aggiungere template
-                        var htmlMovie = template(context);
-                        sectionSeries.append(htmlMovie);
-
-                    } 
-
-                } else {
-                    sectionSeries.append('No results in TV-Series');
-                    inputSearch.select();
-                }
-
-
-
-            },
-
-            error: function() {
-                console.log('Errore chiamata'); 
-            }
-        });
-    } else {
-      sectionResults.append('Errore, inserire un valore nella ricerca')
-      inputSearch.focus();
-    };
     
 };
 
 // Funzione per gestire la visualizzazione dei poster
-function posterImg(thisResult, posterBaseUrl, posterSizes) {
-    if(thisResult.poster_path == null) {
-        thisResult.poster_path = 'assets/img/no_poster_img.jpg'
-        return thisResult.poster_path
+function posterImg(movie, posterBaseUrl, posterSizes) {
+    if(movie.poster_path == null) {
+        movie.poster_path = 'assets/img/no_poster_img.jpg'
+        return movie.poster_path
     }
-    thisResult.poster_path = posterBaseUrl + posterSizes + thisResult.poster_path
-    return thisResult.poster_path
+    movie.poster_path = posterBaseUrl + posterSizes + movie.poster_path
+    return movie.poster_path
 
 }
 
 
-function stars(starAverage, thisResult, searchResults) {
+function stars(starAverage, movie) {
      // Assegno ad una varibile il voto in numero intero (arrotondato per eccesso)
-     var intVote = Math.ceil(thisResult.vote_average)
+     var intVote = Math.ceil(movie.vote_average)
                         
      // Switch per assegnare un numero da 1 a 5 al voto
      switch(intVote) {
@@ -241,7 +319,7 @@ function stars(starAverage, thisResult, searchResults) {
      return starAverage;
 }
 
-function flags(thisResult) {
+function flags(movie) {
     flagArray = [
         'it',
         'en'
@@ -249,13 +327,24 @@ function flags(thisResult) {
 
     for (var i = 0; i < flagArray.length; i++) {
         var ciao = flagArray[i]
-        if(thisResult == ciao) {
+        if(movie == ciao) {
             return '<img src="assets/img/' + ciao + '.svg" class="flags"'
         };  
     };
 
-    return thisResult;  
+    return movie;  
 };
+
+function setOverview(movie) {
+    if(movie == "") {
+        var overview = 'No description.';
+    } else {
+        var summaryStr = movie;
+        var overview = summaryStr.substr(0, 200) + "...";
+    };
+
+    return overview;
+}
 
 // funzione Reset DOM container
 function reset(containerFilms, containerSeries) {  

@@ -13,27 +13,32 @@
 </head>
 <body>
 
-    <header class="main-header u_flex">
-        <div class="main-header__left u_flex">
-            <img src="assets/img/logo-matflix.png" alt="">
-            <a href="#wrapper-films">Films</a>
-            <a href="#wrapper-series">Tv-Series</a>
-        </div> 
-        <div class="search-section u_pRelative">
-            <i class="fas fa-search u_pAbsolute"></i>
-            <input id="search" type="text" placeholder="Search">
-        </div>
+    <header class="main-header">
+        <nav class="u_flex">
+            <div class="main-header__left u_flex">
+                <img class="home-btn" src="assets/img/logo-matflix.png" alt="">
+                <a class="home-btn" href="#">Trending</a>
+                <span>|</span>
+                <a href="#wrapper-films">Films</a>
+                <a href="#wrapper-series">Tv-Series</a>
+            </div>
+            <div class="search-section u_pRelative">
+                <!-- <i class="fas fa-times u_pAbsolute"></i> -->
+                <i class="fas fa-search u_pAbsolute"></i>
+                <input id="search" type="text" placeholder="Search">
+            </div>
+        </nav>
     </header>
 
     <main class="main u_flexColumn">
         <section class="main_result-search">
             <div id="wrapper-films">
-                <h2>Films</h2>
+                <h2><span class="trending">Trending</span> Films</h2>
             <section id="films" class="u_flex">
             </section>
             </div>
             <div id="wrapper-series">
-                <h2>TV-Series</h2>
+                <h2><span class="trending">Trending</span> TV-Series</h2>
             <section id="series" class="u_flex">
             </section> 
             </div>   
