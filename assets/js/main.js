@@ -229,12 +229,17 @@ function search(inputSearch, sectionFilms, sectionSeries, template, starAverage)
     
                         } 
     
-                    } else {
-                        
-                        console.log('devo trovare il modo');
+                    }  else {
+                        console.log(this.url);
+                        if (this.url.includes('search/movie')) {
+                            sectionFilms.text('No results in Films')
+                        }
+                        if (this.url.includes('search/tv')) {
+                            sectionSeries.text('No results in Tv-series')
+                        } 
+                        // console.log('devo trovare il modo');
                         inputSearch.select();
                     }
-                    
                 },
                     
                 error: function() {
