@@ -16,17 +16,64 @@ console.log('jQuery ok ->', $);
     var searchBtn = $('.search-section i');
     var homeBtn = $('.home-btn');
     var inputSearch = $('.main-header input#search');
+    var sectionPeople = $('.main .main_result-search #people')
     var sectionFilms = $('.main .main_result-search #films');
     var sectionSeries = $('.main .main_result-search #series');
 
-    
-    // Init Handlebars
+
+    // Init Handlebars - Movie
     var source = $('#movie-template').html();
     var template = Handlebars.compile(source);
     
+    // Init Handlebars - People
+    var sourcePeople = $('#people-template').html();
+    var templatePeople = Handlebars.compile(sourcePeople);
+
+
+    // top ten people week
+    people10(sectionPeople, templatePeople)
+
+    $('body').on('click', '.movie', function() {
+
+        //refs da dove prendere i dati
+        var poster = $(this).children('.poster').children('img').clone();
+        var format = $(this).find('.movie__format').text()
+        var title = $(this).find('.movie__title').text()
+        var language = $(this).find('.movie__language').html()
+        var average = $(this).find('.movie__average').html()
+        var summary = $(this).find('.summary').text()
+        
+        // printo dati
+        $('.info-movie__left_cover').html(poster);
+        $('.detail__format').text(format);
+        $('.detail__title').text(title);
+        $('.detail__language').html(language);
+        $('.detail__average').html(average);
+        $('.detail__summary').text(summary);
+ 
+        //Show section
+        $('.disable-body').show();
+        $('.info-movie').show();
+    });
+
+    //Chiudi panel info movie con icona
+    $('.close').click( function() {
+        //Hide section
+        $('.disable-body').hide();
+        $('.info-movie').hide();
+    });
+    
+    //Chiudi panel info movie cliccando sul finto body
+    $('.disable-body').click( function() {
+        //Hide section
+        $('.disable-body').hide();
+        $('.info-movie').hide();
+    });
+
+
     // trending film e tv-series
     trending(sectionFilms, sectionSeries, template);
-
+    
     homeBtn.click( function() {
         // Aggiungo trending a nome sezione
         $('.main_result-search span.trending').text('Trending');
@@ -75,7 +122,46 @@ console.log('jQuery ok ->', $);
  *  FUNCTIONS
  *********************/
 
- // Funzione per printare di default i contenuti più cercati
+// Funzione per printare top ten people
+function people10(sectionPeople, templatePeople) {
+    // chiamata api con query in input
+    $.ajax({
+        url: 'https://api.themoviedb.org/3/trending/person/week?api_key=e2330ecaa641a077ab62520c44ab636f',
+        method: 'GET',
+        success: function(res) {
+            
+            // Variabili per immagine
+            var posterBaseUrl = 'https://image.tmdb.org/t/p/'
+            var posterSizes = 'w185';
+            
+            // conservo i risultati in una variabile
+            var results = res.results;
+            
+                for (var i = 0; i < 10; i++) {
+ 
+                    var people = results[i];
+
+                    // imposto dati template
+                    var context = {
+                        imagePeopleUrl: posterBaseUrl + posterSizes + people.profile_path,
+                        namePeople: people.name,
+                        rolePeople: people.known_for_department,
+                    }                      
+                    
+                    //compilare e aggiungere template
+                    var htmlPeople = templatePeople(context);
+                    sectionPeople.append(htmlPeople);            
+                } 
+
+        },
+            
+        error: function() {
+            console.log('Errore chiamata'); 
+        }
+    });
+}
+
+// Funzione per printare di default i contenuti più cercati
 function trending(sectionFilms, sectionSeries, template) {
     var posterBaseUrl = 'https://image.tmdb.org/t/p/'
     var posterSizes = 'w342';

@@ -6,12 +6,12 @@
     <title>Boolflix</title>
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
-    <!-- Google Font | Roboto & Roboto Slab-->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Font | Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'/>
 </head>
-<body>
+<body class="u_pRelative">
 
     <header class="main-header">
         <nav class="u_flex">
@@ -32,20 +32,64 @@
 
     <main class="main u_flexColumn">
         <section class="main_result-search">
+            <div id="wrapper-people">
+                <h2>People - Top 10 Week</h2>
+                <section id="people" class="u_flex">
+                    
+                </section>
+            </div>
             <div id="wrapper-films">
                 <h2><span class="trending">Trending</span> Films</h2>
-            <section id="films" class="u_flex">
-            </section>
+                <section id="films" class="u_flex">
+                </section>
             </div>
             <div id="wrapper-series">
                 <h2><span class="trending">Trending</span> TV-Series</h2>
-            <section id="series" class="u_flex">
-            </section> 
+                <section id="series" class="u_flex">
+                </section> 
             </div>   
         </section>
     </main>
 
-    
+    <footer>
+
+    </footer>
+
+    <!-- Info Movie -->
+
+    <section class="disable-body u_pAbsolute">
+        <section class="info-movie u_pAbsolute">
+            <div class="info-movie__wrapper u_flex u_pRelative">
+                <i class="fas fa-times close u_pAbsolute"></i>
+                <div class="info-movie__left">
+                    <div class="info-movie__left_cover">
+                        <img src="assets/img/starwars.jpg" alt="">
+                    </div>
+                </div>
+                <div class="info-movie__right u_flexColumn">
+                    <ul class="info-movie__right_detail">
+                        <li>
+                            <h4 class="detail__format">Film</h4>
+                        </li>
+                        <li>
+                            <h4 class="detail__title">Star Wars</h4>
+                        </li>
+                        <li>
+                            <h4 class="detail__language">Lang: it</h4>
+                        </li>
+                        <li>
+                             <h4 class="detail__average">st st st st</h4>
+                        </li>
+                        <li class="detail__summary">
+                            <p>The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins....</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
+
+
     <!-- Handlebars -->
     <script id="movie-template" type="text/x-handlebars-template">
         <div class="movie">
@@ -72,6 +116,19 @@
                     <p>{{ summary }}</p>
                 </li>
             </ul>
+        </div>
+        
+    </script>
+
+    <script id="people-template" type="text/x-handlebars-template">
+        <div class="people u_flexColumn">
+            <div class="poster-people">
+                <img src="{{imagePeopleUrl}}" alt="">
+            </div>
+            <div class="info-people">
+                <h4>{{ namePeople }}</h4>
+                <h5>{{ rolePeople }}</h5>
+            </div>
         </div>
         
     </script>

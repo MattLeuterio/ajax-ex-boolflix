@@ -5,7 +5,7 @@
 }
 
 body {
-    min-width: 100vw;
+    width: 100%;
     font-family: 'Roboto', sans-serif;
     background: #141414;
     color: #fff;
@@ -116,10 +116,6 @@ nav {
     padding-top: 68px;
 }
 
-.main .error {
-
-}
-
 .main_result-search h2 {
  padding: 70px 4% 30px;
 }
@@ -127,10 +123,51 @@ nav {
 #films,
 #series {
     flex-wrap: wrap;
-    padding: 0 4%;
-} 
+    padding: 0 3%;
+}
+
+#people {
+    flex-wrap: wrap;
+    padding: 0 3%;
+    overflow-x: hidden;
+}
+
+.people {
+    margin: 10px 5px;
+
+}
+
+.poster-people {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 15px;
+    border: 2px solid #dc1a28;
+    border-radius: 50%;
+}
+
+.poster-people img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #141414;
+}
+
+.info-people {
+    margin-left: 10px;
+}
+
+.info-people h4 {
+    font-size: 15px;
+}
+
+.info-people h5 {
+    font-size: 12px;
+    font-weight: 400;
+}
 
 .movie {
+    cursor: pointer;
     min-width: 342px;
     height: 512px;
     margin: 10px 5px;
@@ -195,4 +232,98 @@ nav {
 
 .movie .movie_detail img.flags {
     width: 15px;
+}
+
+/* INFO MOVIE */
+
+.disable-body {
+    display: none; /* jQuery */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 2;
+}
+
+.info-movie {
+    display: none; /* jQuery */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 90%;
+    min-height: 30%;
+    padding: 10px;
+    background: #0b0b0b;
+}
+
+.info-movie__wrapper {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.info-movie__wrapper i.close {
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+}
+
+.info-movie__left {
+    width: 30%;
+    height: 100%;
+}
+
+.info-movie__left_cover {
+    width: 100%;
+}
+
+.info-movie__left_cover img {
+    width: 100%;
+}
+
+.info-movie__right {
+    width: 70%;
+    height: 100%;
+    padding: 20px;
+}
+
+.info-movie__right_detail li {
+}
+
+.detail__format {
+    font-size: 14px;
+    color: #dc1a28;
+}
+
+.info-movie__right_detail {
+    height: 100%;
+}
+
+.detail__average {
+}
+
+.detail__format {
+
+}
+
+.detail__title {
+    font-size: 28px;
+}
+
+.detail__language {
+    font-size: 14px;
+}
+
+.detail__language img {
+    width: 15px;
+}
+
+.detail__summary {
+    margin-top: 20px;
+    height: 173px;
+    overflow-y: auto;
 }
