@@ -37,6 +37,7 @@ console.log('jQuery ok ->', $);
     // jumbotron
     jumbotron(sectionJumbotron, templateJumbotron)
 
+    // Display trailer section 
     $('.jumbotron').on('click', '.btn_trailer', function() {
         console.log('click');
         
@@ -46,6 +47,7 @@ console.log('jQuery ok ->', $);
 
     // top ten people week
     people10(sectionPeople, templatePeople)
+
 
     $('body').on('click', '.movie', function() {
 
@@ -114,14 +116,31 @@ console.log('jQuery ok ->', $);
 
     });
     
+
+    var scrollLink = $('.scroll');
+
+    scrollLink.click( function(e) {
+
+        e.preventDefault();
+        $('body, html').animate({
+            scrollTop: $(this.hash).offset().top
+        }, 1000)
+
+    });
+
     // Avvia ricerca con "INVIO" ed ad ogni click sulla SPACEBAR
     inputSearch.keypress(function(event) {
 
         
 
             if(event.which == 13) {
+
                 // scroll alla posizione dei risultati
-                $('#wrapper-films').scrollTop()
+                event.preventDefault();
+                $('body, html').animate({
+                    scrollTop: $('#wrapper-films').offset().top
+                }, 500)
+
                 //Funzione per la ricerca e la stampa
                 search(inputSearch, sectionFilms, sectionSeries, template)
             };
