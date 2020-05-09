@@ -19,6 +19,7 @@ console.log('jQuery ok ->', $);
     var sectionPeople = $('.main .main_result-search #people')
     var sectionFilms = $('.main .main_result-search #films');
     var sectionSeries = $('.main .main_result-search #series');
+    var sectionJumbotron = $('.jumbotron');
 
 
     // Init Handlebars - Movie
@@ -28,6 +29,19 @@ console.log('jQuery ok ->', $);
     // Init Handlebars - People
     var sourcePeople = $('#people-template').html();
     var templatePeople = Handlebars.compile(sourcePeople);
+
+    // Init Handlebars - Jumbotron
+    var sourceJumbo = $('#jumbotron-template').html();
+    var templateJumbotron = Handlebars.compile(sourceJumbo);
+
+    // jumbotron
+    jumbotron(sectionJumbotron, templateJumbotron)
+
+    $('.jumbotron').on('click', '.btn_trailer', function() {
+        console.log('click');
+        
+        $('.iframe-container').toggle()
+    });
 
 
     // top ten people week
@@ -99,15 +113,16 @@ console.log('jQuery ok ->', $);
          inputSearch.select();
 
     });
-
+    
     // Avvia ricerca con "INVIO" ed ad ogni click sulla SPACEBAR
     inputSearch.keypress(function(event) {
-            
-            /**
-             * L'idea è quella di poter filtrare man mano la ricerca mentre scrivi
-             * usando quindi un detect anche sulla spacebar per far partire la ricerca
-             */
+
+        
+
             if(event.which == 13) {
+                // scroll alla posizione dei risultati
+                $('#wrapper-films').scrollTop()
+                //Funzione per la ricerca e la stampa
                 search(inputSearch, sectionFilms, sectionSeries, template)
             };
 
@@ -121,6 +136,50 @@ console.log('jQuery ok ->', $);
 /*********************
  *  FUNCTIONS
  *********************/
+
+//Funzione per template Jumbotron
+function jumbotron(sectionJumbotron, templateJumbotron) {
+    //Jumbotron 
+    var jumboFilms = [
+        {
+            title: "Inception",
+            format: "Film",
+            link_trailer: "8hP9D6kZseM",
+            link_image: "inception.jpg",
+            summary: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O."
+        },
+        {
+            title: "Narcos: Mexico",
+            format: "Tv-Series",
+            link_trailer: "eHdRMOAT-Lc",
+            link_image: "bg-narcos.webp",
+            summary: "Narcos: Mexico explores the origin of the modern war on drugs, beginning at the time when Mexican traffickers were a loose and disorganized confederation of small-time independent cannabis growers and dealers."
+        },
+        {
+            title: "Star Wars: Episode IX - The Rise of Skywalker",
+            format: "Film",
+            link_trailer: "8Qn_spdM5Zg",
+            link_image: "starwars.jpg",
+            summary: "The surviving members of the resistance face the First Order once again, and the legendary conflict between the Jedi and the Sith reaches its peak bringing the Skywalker saga to its end."
+        }
+
+    ];
+
+    var randomNum = getRandomInt(0, 2);
+
+    // imposto dati template
+    var contextJumbo = {
+        format: jumboFilms[randomNum].format,
+        title: jumboFilms[randomNum].title,
+        summary: jumboFilms[randomNum].summary,
+        linkTrailer: jumboFilms[randomNum].link_trailer,
+        linkImage: jumboFilms[randomNum].link_image
+    };                      
+    
+    //compilare e aggiungere template
+    var htmlJumbo = templateJumbotron(contextJumbo);
+    sectionJumbotron.append(htmlJumbo);   
+};
 
 // Funzione per printare top ten people
 function people10(sectionPeople, templatePeople) {
@@ -159,7 +218,7 @@ function people10(sectionPeople, templatePeople) {
             console.log('Errore chiamata'); 
         }
     });
-}
+};
 
 // Funzione per printare di default i contenuti più cercati
 function trending(sectionFilms, sectionSeries, template) {
@@ -231,7 +290,7 @@ function trending(sectionFilms, sectionSeries, template) {
 
         
     }
-}
+};
 
 //Funzione per la ricerca dell'utente / Con reset iniziale
 function search(inputSearch, sectionFilms, sectionSeries, template, starAverage) {
@@ -258,7 +317,6 @@ function search(inputSearch, sectionFilms, sectionSeries, template, starAverage)
         var dataApi = {
             url: thisApi,
             api_key: "e2330ecaa641a077ab62520c44ab636f",
-            language: "it-IT",
             query: inputSearch.val()
         }
 
@@ -351,9 +409,9 @@ function posterImg(movie, posterBaseUrl, posterSizes) {
     movie.poster_path = posterBaseUrl + posterSizes + movie.poster_path
     return movie.poster_path
 
-}
+};
 
-
+// Trasforma la valutazione numerica in stelle da 1 a 5
 function stars(starAverage, movie) {
      // Assegno ad una varibile il voto in numero intero (arrotondato per eccesso)
      var intVote = Math.ceil(movie.vote_average)
@@ -403,8 +461,9 @@ function stars(starAverage, movie) {
          starAverage += '<i class="far fa-star"></i>';
      }  
      return starAverage;
-}
+};
 
+// Gestisce le icone della lingua
 function flags(movie) {
     flagArray = [
         'it',
@@ -421,6 +480,7 @@ function flags(movie) {
     return movie;  
 };
 
+// Funzione per gestire le descrizioni dei film
 function setOverview(movie) {
     if(movie == "") {
         var overview = 'No description.';
@@ -430,10 +490,19 @@ function setOverview(movie) {
     };
 
     return overview;
-}
+};
 
 // funzione Reset DOM container
 function reset(containerFilms, containerSeries) {  
     containerFilms.html('');
     containerSeries.html('');
 };
+
+// Restituisce numero random in un range 
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //Il max è incluso e il min è incluso 
+};
+

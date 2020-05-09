@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolflix</title>
+    <title>Matflix</title>
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- Google Font | Roboto -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'/>
+    <!-- Favicon -->
+    <link rel="icon" href="assets/img/favicon-matfilx.ico" sizes="32x32 48x48">
 </head>
-<body class="u_pRelative">
+<body id="body" class="u_pRelative">
 
     <header class="main-header">
         <nav class="u_flex">
             <div class="main-header__left u_flex">
-                <img class="home-btn" src="assets/img/logo-matflix.png" alt="">
-                <a class="home-btn" href="#">Trending</a>
-                <span>|</span>
+                <a href="#body"><img class="home-btn" src="assets/img/logo-matflix.png" alt=""></a>
                 <a href="#wrapper-films">Films</a>
                 <a href="#wrapper-series">Tv-Series</a>
             </div>
             <div class="search-section u_pRelative">
-                <!-- <i class="fas fa-times u_pAbsolute"></i> -->
                 <i class="fas fa-search u_pAbsolute"></i>
                 <input id="search" type="text" placeholder="Search">
             </div>
         </nav>
+        <section class="jumbotron u_pRelative u_flex">
+            <!-- Code from template handlebars & JS -->
+        </section>
     </header>
 
     <main class="main u_flexColumn">
@@ -51,44 +53,63 @@
         </section>
     </main>
 
-    <footer>
-
+    <footer class="u_flex">
+        <div class="footer_left u_flexColumn">
+            <div class="footer_left__name">
+                <h2>Matflix &copy;2020</h2>
+                <h3>by Matteo Francesco Leuterio</h3>
+            </div>
+            <div class="footer_left__social u_flex">
+                <a href="https://github.com/MattLeuterio" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/matteo-leuterio-7b3b4641/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/matt.leuterio/" target="_blank"><i class="fab fa-instagram"></i></a>             
+            </div>
+            <div class="footer_left__contact">
+                <h3>leuterio.matteo@gmail.com</h3>
+            </div>
+        </div>
+        <div class="footer_right u_flex">
+            <div class="footer_right__logo">
+                <img class="home-btn" src="assets/img/logo-matflix.png" alt="">
+            </div>
+        </div>
     </footer>
 
-    <!-- Info Movie -->
+    <!-- Info Movie - Starting on display:none (jQuery) -->
 
-    <section class="disable-body u_pAbsolute">
-        <section class="info-movie u_pAbsolute">
-            <div class="info-movie__wrapper u_flex u_pRelative">
-                <i class="fas fa-times close u_pAbsolute"></i>
-                <div class="info-movie__left">
-                    <div class="info-movie__left_cover">
-                        <img src="assets/img/starwars.jpg" alt="">
-                    </div>
-                </div>
-                <div class="info-movie__right u_flexColumn">
-                    <ul class="info-movie__right_detail">
-                        <li>
-                            <h4 class="detail__format">Film</h4>
-                        </li>
-                        <li>
-                            <h4 class="detail__title">Star Wars</h4>
-                        </li>
-                        <li>
-                            <h4 class="detail__language">Lang: it</h4>
-                        </li>
-                        <li>
-                             <h4 class="detail__average">st st st st</h4>
-                        </li>
-                        <li class="detail__summary">
-                            <p>The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins....</p>
-                        </li>
-                    </ul>
+    <!-- Cover body for focus on info-movie -->
+    <section class="disable-body u_pAbsolute"></section>
+
+    <!-- Panel info-movie -->
+    <section class="info-movie u_pAbsolute">
+        <div class="info-movie__wrapper u_flex u_pRelative">
+            <i class="fas fa-times close u_pAbsolute"></i>
+            <div class="info-movie__left">
+                <div class="info-movie__left_cover">
+                    <img src="" alt="">
                 </div>
             </div>
-        </section>
+            <div class="info-movie__right u_flexColumn">
+                <ul class="info-movie__right_detail">
+                    <li>
+                        <h4 class="detail__format">Film</h4>
+                    </li>
+                    <li>
+                        <h4 class="detail__title">Star Wars</h4>
+                    </li>
+                    <li>
+                        <h4 class="detail__language">Lang: it</h4>
+                    </li>
+                    <li>
+                         <h4 class="detail__average">st st st st</h4>
+                    </li>
+                    <li class="detail__summary">
+                        <p>The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins....</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </section>
-
 
     <!-- Handlebars -->
     <script id="movie-template" type="text/x-handlebars-template">
@@ -131,6 +152,36 @@
             </div>
         </div>
         
+    </script>
+
+    <script id="jumbotron-template" type="text/x-handlebars-template">
+        <!-- Jumbotron Left -->
+        <div class="jumbotron_left">
+            <div class="jumbotron_movie-info u_flexColumn">
+                <div class="jumbotron-movie__format">
+                    <h3>{{ format }}</h3>
+                </div>
+                <div class="jumbotron-movie__title">
+                    <h2>{{ title }} </h2>
+                </div>
+                <div class="jumbotron-movie__summary">
+                    <p>{{ summary }}</p>
+                </div>
+                <div class="jumbotron-movie__btn">
+                    <button class="btn_trailer"><i class="fas fa-play"></i>Trailer</button>
+                </div>
+            </div>
+        </div>
+        <!-- Jumbotron Right -->
+        <div class="jumbotron_right">
+            <div class="jumbotron_movie-trailer u_flex">
+                <div class="iframe-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{linkTrailer}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+         <!-- Background Section -->
+         <img class="bg u_pAbsolute" src="assets/img/jumbotron-img/{{linkImage}}" alt="">
     </script>
 
 
