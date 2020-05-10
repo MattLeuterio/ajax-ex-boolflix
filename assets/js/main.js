@@ -15,6 +15,7 @@ console.log('jQuery ok ->', $);
     // refs
     var searchBtn = $('.search-section i');
     var homeBtn = $('.home-btn');
+    var scrollLink = $('.scroll');
     var inputSearch = $('.main-header input#search');
     var sectionPeople = $('.main .main_result-search #people')
     var sectionFilms = $('.main .main_result-search #films');
@@ -39,9 +40,9 @@ console.log('jQuery ok ->', $);
 
     // Display trailer section 
     $('.jumbotron').on('click', '.btn_trailer', function() {
-        console.log('click');
+
+        $('.iframe-container').toggle();
         
-        $('.iframe-container').toggle()
     });
 
 
@@ -116,8 +117,6 @@ console.log('jQuery ok ->', $);
 
     });
     
-
-    var scrollLink = $('.scroll');
 
     scrollLink.click( function(e) {
 

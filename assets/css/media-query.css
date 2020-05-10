@@ -1,0 +1,175 @@
+/* Small devices (landscape phones, 576px) */
+@media (max-width: 576px) {
+    /* header */
+    .main-header img.home-btn {
+        width: 80px;
+        margin-left: 10px;
+    }
+
+    .main-header input.active-searchbar {
+        width: 180px;
+    }
+
+    .main-header a:nth-child(2),
+    .main-header a:nth-child(3){
+        display: none;
+    }
+
+    .jumbotron {
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .jumbotron_left {
+        width: 100%;
+        height: 30%;
+    }
+
+    .jumbotron_right {
+        width: 100%;
+        height: 40%;
+    }
+
+    .jumbotron-movie__format h3 {
+       font-size: 14px;
+    }
+
+    .jumbotron-movie__title h2 {
+        font-size: 28px;
+    }
+
+    .jumbotron_movie-trailer {
+        width: 100%;
+    }
+
+    .jumbotron-movie__btn {
+        display: none;
+    }
+
+    /* main */
+    #films,
+    #series {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    /* info movie */
+    .info-movie {
+        min-width: 95%;
+    }
+
+    /* footer */
+    .footer_right {
+        width: 40%;
+    }
+    .footer_right img {
+        width: 100px;
+    }
+
+    .footer_left {
+        width: 60%;
+    }
+    
+    .footer_left__name h2 {
+        font-size: 14px;
+    }
+    
+    .footer_left__name h3 {
+        font-size: 12px;
+    }
+    
+    .footer_left__social a{
+        font-size: 16px;
+        padding: 5px 7px;
+    }
+    
+    .footer_left__contact h3{
+        font-weight: 400;
+        font-size: 14px;
+    }
+    
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media all and (max-width: 768px) and (min-width: 577px) {
+    /* header */
+    .main-header img.home-btn {
+        margin-left: 10px;
+    }
+
+
+    .jumbotron {
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .jumbotron_left {
+        width: 100%;
+        height: 30%;
+    }
+
+    .jumbotron_right {
+        width: 100%;
+        height: 40%;
+    }
+
+    .jumbotron-movie__title h2 {
+        font-size: 32px;
+    }
+
+    .jumbotron_movie-trailer {
+        width: 100%;
+    }
+
+    .iframe-container {
+        padding-bottom: 300px;
+        padding-left: 300px;
+    }
+
+
+    /* main */
+    #films,
+    #series {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    /* info movie */
+    .info-movie {
+        min-width: 95%;
+    }
+
+    /* footer */
+    .footer_right {
+        width: 40%;
+    }
+    .footer_right img {
+        width: 150px;
+    }
+
+    .footer_left {
+        width: 60%;
+    }
+    
+    .footer_left__name h2 {
+        font-size: 14px;
+    }
+    
+    .footer_left__name h3 {
+        font-size: 12px;
+    }
+    
+    .footer_left__social a{
+        font-size: 16px;
+        padding: 5px 7px;
+    }
+    
+    .footer_left__contact h3{
+        font-weight: 400;
+        font-size: 14px;
+    }
+    
+}
+}
